@@ -16,14 +16,13 @@
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
 
 //define your default values here, if there are different values in config.json, they are overwritten.
-char mqtt_server[40] = "192.168.0.192";
-char mqtt_port[6] = "1883";
+char mqtt_server[40]          = "192.168.0.192";
+char mqtt_port[6]             = "1883";
 
 //Project name
-char WifiApName[40]     = "Wifi_LETTERBOX";
-char MQTTClientName[40] = "Wifi_MQTT_LETTERBOX";
-char OtaClientName[40]  = "Wifi_OTA_LETTERBOX";
-
+char WifiApName[40]           = "Wifi_LETTERBOX";
+char MQTTClientName[40]       = "Wifi_MQTT_LETTERBOX";
+char OtaClientName[40]        = "Wifi_OTA_LETTERBOX";
 
 // MQTT
 const char* pup_alive         = "/topic_letterbox/active";
@@ -43,7 +42,6 @@ void saveConfigCallback () {
 }
 
 
-
 // OTA setup function:
 void OTA_setup (void)
 {
@@ -55,7 +53,6 @@ void OTA_setup (void)
   ArduinoOTA.setHostname((const char *) OtaClientName);
   //ArduinoOTA.setHostname("LETTERBOX");
   
-
   // No authentication by default
   ArduinoOTA.setPassword((const char *)"admin");
 
@@ -83,8 +80,6 @@ void OTA_setup (void)
   Serial.println(WiFi.localIP());
 }
 
-boolean state = false;
-
 // MQTT callback function:
 void MQTTcallback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived @ PUB [");
@@ -94,21 +89,6 @@ void MQTTcallback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
-/*
-  if (strcmp(topic, sub_value1) == 0) {
-    if ((char)payload[0] == '0')
-      state = false;
-    else
-      state = true;
-  }
-
-  if (strcmp(topic, sub_value2) == 0) {
-  }
-
-  if (strcmp(topic, sub_value3) == 0) {
-  }
-*/
-
 }
 
 // RECONNECT MQTT Server
@@ -118,11 +98,6 @@ void reconnect() {
     Serial.println("Attempting MQTT connection...");
     // Attempt to connect
     if (client.connect(MQTTClientName)) {
-
-      //client.subscribe(sub_value1); client.loop();
-      //client.subscribe(sub_value2); client.loop();
-      //client.subscribe(sub_value3); client.loop();
-
       Serial.println("connected ...");
     } else {
       Serial.print("failed, rc=");
@@ -235,7 +210,7 @@ void setup() {
   //sets timeout until configuration portal gets turned off
   //useful to make it all retry or go to sleep
   //in seconds
-  //wifiManager.setTimeout(120);
+  wifiManager.setTimeout(120);
 
   //fetches ssid and pass and tries to connect
   //if it does not connect it starts an access point with the specified name
@@ -305,8 +280,6 @@ void setup() {
 
   SleepTime = millis();
 }
-
-
 
 
 void loop() {
